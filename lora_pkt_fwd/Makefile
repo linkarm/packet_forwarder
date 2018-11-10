@@ -38,7 +38,13 @@ LGW_INC += $(LGW_PATH)/inc/loragw_gps.h
 
 ### Linking options
 
-LIBS := -lloragw -lrt -lpthread -lm
+ifeq ($(CFG_SPI),native)
+  LIBS := -lloragw -lrt -lpthread -lm
+else ifeq ($(CFG_SPI),ftdi)
+  LIBS := -lloragw -lrt -lpthread -lm -lmpsse
+else
+    $(error [error] Can't find configuration for SPI phy)
+endif
 
 ### General build targets
 
